@@ -2,7 +2,7 @@ module "minimalist" {
     source                  = "../../modules/domain"
     instance_name           = "jh-minimalist"
     cloudinit_config_file   = "${path.module}/cloudinit-ubuntu.yaml"
-    network_config_file     = "../../templates/network-v2.yaml.tpl"
+    network_config_file     = "../../templates/network-v2.yaml"
     base_volume_name        = "ubuntu-noble-20251206.img"
     base_volume_pool        = "images"
     volume_pool             = "vms"
@@ -60,9 +60,9 @@ module "all_you_can_config" {
     instance_domain         = "example.com"
     instance_running        = true
     instance_autostart      = false
-    cloudinit_config_file   = "../../templates/cloudinit.yaml.tpl"
-    network_config_file     = "../../templates/network-v2.yaml.tpl"
-    xslt_config_path        = "../../templates/libvirt.xslt.tpl"
+    cloudinit_config_file   = "../../templates/cloudinit.yaml"
+    network_config_file     = "../../templates/network-v2.yaml"
+    xslt_config_path        = "../../templates/libvirt.xslt"
     use_uefi                = true
     base_volume_name        = "ubuntu-noble-20251206.img"
     base_volume_pool        = "images"

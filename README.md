@@ -63,8 +63,8 @@ module "vm" {
   memory_size        = 2
   rootfs_size        = 20
 
-  cloudinit_config_file = "../../templates/cloudinit.yaml.tpl"
-  network_config_file   = "../../templates/network-v2.yaml.tpl"
+  cloudinit_config_file = "../../templates/cloudinit.yaml"
+  network_config_file   = "../../templates/network-v2.yaml"
 
   network_config = [
     {
@@ -309,8 +309,8 @@ module "vm_minimal" {
   vcpu                  = 2
   memory_size           = 2
   rootfs_size           = 20
-  cloudinit_config_file = "../../templates/cloudinit.yaml.tpl"
-  network_config_file   = "../../templates/network-v2.yaml.tpl"
+  cloudinit_config_file = "../../templates/cloudinit.yaml"
+  network_config_file   = "../../templates/network-v2.yaml"
 
   network_config = [
     {
@@ -448,12 +448,12 @@ module "net_route" {
 │       ├── variables.tf
 │       └── providers.tf
 ├── templates/
-│   ├── cloudinit.yaml.tpl       # cloud-init user-data template
-│   ├── cloudinit-ubuntu.yaml    # Ubuntu cloud-init example
-│   ├── cloudinit-rhel.yaml      # RHEL cloud-init example
-│   ├── network-v1.yaml.tpl      # network-config v1 template
-│   ├── network-v2.yaml.tpl      # network-config v2 template
-│   └── libvirt.xslt.tpl         # XSLT template for domain XML transformation
+│   ├── cloudinit.yaml          # cloud-init user-data template
+│   ├── cloudinit-ubuntu.yaml   # Ubuntu cloud-init example
+│   ├── cloudinit-rhel.yaml     # RHEL cloud-init example
+│   ├── network-v1.yaml         # network-config v1 template
+│   ├── network-v2.yaml         # network-config v2 template
+│   └── libvirt.xslt            # XSLT template for domain XML transformation
 └── examples/
     ├── vm/              # domain module usage examples
     ├── networks/        # network module usage examples
