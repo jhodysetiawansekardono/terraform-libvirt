@@ -1,0 +1,100 @@
+#cloud-config
+fqdn: ${hostname}${domain}
+hostname: ${hostname}
+create_hostname_file: true
+
+# Update & install package
+package_update: true
+package_upgrade: false
+package_reboot_if_required: false
+packages:
+  - apt-transport-https
+  - arping
+  - bash-completion
+  - ca-certificates
+  - conntrack
+  - curl
+  - dnsutils
+  - git
+  - glusterfs-client
+  - gnupg
+  - htop
+  - iperf
+  - iperf3
+  - jq
+  - lsb-release
+  - net-tools
+  - nfs-common
+  - nload
+  - software-properties-common
+  - sysstat
+  - tcpdump
+  - tcptrack
+  - traceroute
+  - tree
+  - unzip
+
+# Setup users & SSH
+users:
+  - name: root
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2E...
+  - name: beruanglaut
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2E...
+
+# Set user passwords on first boot
+# Creates a hashed password using:
+#   mkpasswd -m sha-512 -R 4096
+chpasswd:
+  expire: false
+  users:
+    - name: root
+      password: $6$rounds=4096$j6KQ...
+    - name: beruanglaut
+      password: $6$rounds=4096$4gB1...
+
+# Writing out arbitrary files
+write_files:
+  - path: /etc/profile.d/timedate.sh
+    permissions: '0644'
+    content: |
+      PS1="[\D{%d/%m/%Y %H:%M}] $PS1"
+  - path: /root/.bashrc
+    append: true
+    content: |
+
+      # Enable custom environment variables
+      if [ -f /etc/profile.d/timedate.sh ]; then
+          . /etc/profile.d/timedate.sh
+      fi
+  - path: /home/beruanglaut/.bashrc
+    owner: beruanglaut:beruanglaut
+    append: true
+    content: |
+
+      # Enable custom environment variables
+      if [ -f /etc/profile.d/timedate.sh ]; then
+          . /etc/profile.d/timedate.sh
+      fi
+
+# Set NTP
+ntp:
+  enabled: true
+  ntp_client: systemd-timesyncd
+  allow:
+    - 127.0.0.1/32
+  servers:
+    - time.cloudflare.com
+timezone: Asia/Jakarta
+
+# This message will be written in cloudinit.log
+final_message: |
+  cloud-init has finished
+  version: $version
+  timestamp: $timestamp
+  datasource: $datasource
+  uptime: $uptime

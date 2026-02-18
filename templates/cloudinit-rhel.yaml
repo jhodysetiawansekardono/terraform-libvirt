@@ -1,0 +1,58 @@
+#cloud-config
+fqdn: ${hostname}${domain}
+hostname: ${hostname}
+create_hostname_file: true
+
+# install package
+packages:
+  - bind-utils
+  - git
+  - iperf3
+  - nano
+  - sysstat
+  - tcpdump
+  - traceroute
+  - tree
+  - unzip
+  - vim
+  - wget
+
+# Setup users & SSH
+users:
+  - name: root
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2E...
+  - name: beruanglaut
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2E...
+
+# Set user passwords on first boot
+# Creates a hashed password using:
+#   mkpasswd -m sha-512 -R 4096
+chpasswd:
+  expire: false
+  users:
+    - name: root
+      password: $6$rounds=4096$j6KQ...
+    - name: beruanglaut
+      password: $6$rounds=4096$4gB1...
+
+ntp:
+  enabled: true
+  ntp_client: chrony
+  allow:
+    - 127.0.0.1/32
+  servers:
+    - time.cloudflare.com
+timezone: Asia/Jakarta
+
+# This message will be written in cloudinit.log
+final_message: |
+  cloud-init has finished
+  version: $version
+  timestamp: $timestamp
+  datasource: $datasource
+  uptime: $uptime
