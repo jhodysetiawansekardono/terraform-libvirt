@@ -35,6 +35,9 @@ config:
 %{ if try(net.bond_lacp_rate, null) != null ~}
       bond-lacp-rate: ${net.bond_lacp_rate}
 %{ endif ~}
+%{ if try(net.bond_xmit_hash_policy, null) != null ~}
+      bond-xmit-hash-policy: ${net.bond_xmit_hash_policy}
+%{ endif ~}
 %{ if try(net.ipv4_address, null) != null ~}
     subnets:
       - type: static
@@ -58,12 +61,30 @@ config:
 %{ if try(net.bridge_stp, null) != null || try(net.bridge_forward_delay, null) != null ~}
     params:
 %{ if try(net.bridge_stp, null) != null ~}
-      bridge_stp: ${net.bridge_stp ? "on" : "off"}
+      bridge_stp: "${net.bridge_stp ? "on" : "off"}"
 %{ endif ~}
 %{ if try(net.bridge_forward_delay, null) != null ~}
       bridge_fd: ${net.bridge_forward_delay}
 %{ endif ~}
 %{ endif ~}
+%{ if try(net.ipv4_address, null) != null ~}
+    subnets:
+      - type: static
+        address: ${net.ipv4_address}
+%{ if try(net.ipv4_gateway, null) != null ~}
+        gateway: ${net.ipv4_gateway}
+%{ endif ~}
+%{ if try(net.ipv4_nameservers, null) != null ~}
+        dns_nameservers:
+          - ${net.ipv4_nameservers}
+%{ endif ~}
+%{ endif ~}
+%{ endif ~}
+%{ if try(net.interface_type, "") == "vlan" ~}
+  - type: vlan
+    name: ${net.interface_name}
+    vlan_link: ${net.vlan_link}
+    vlan_id: ${net.vlan_id}
 %{ if try(net.ipv4_address, null) != null ~}
     subnets:
       - type: static

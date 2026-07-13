@@ -47,6 +47,9 @@ bonds:
 %{ if try(net.bond_lacp_rate, null) != null ~}
       lacp-rate: ${net.bond_lacp_rate}
 %{ endif ~}
+%{ if try(net.bond_xmit_hash_policy, null) != null ~}
+      transmit-hash-policy: ${net.bond_xmit_hash_policy}
+%{ endif ~}
 %{ if try(net.ipv4_address, null) != null ~}
     addresses:
       - ${net.ipv4_address}
@@ -84,6 +87,34 @@ bridges:
       forward-delay: ${net.bridge_forward_delay}
 %{ endif ~}
 %{ endif ~}
+%{ if try(net.ipv4_address, null) != null ~}
+    addresses:
+      - ${net.ipv4_address}
+%{ else ~}
+    addresses: []
+%{ endif ~}
+%{ if try(net.ipv4_gateway, null) != null ~}
+    routes:
+      - to: default
+        via: ${net.ipv4_gateway}
+%{ endif ~}
+%{ if try(net.ipv4_nameservers, null) != null ~}
+    nameservers:
+      addresses:
+        - ${net.ipv4_nameservers}
+%{ endif ~}
+    dhcp4: false
+    dhcp6: false
+%{ endif ~}
+%{ endfor ~}
+%{ endif ~}
+%{ if length([for net in networking : net if try(net.interface_type, "") == "vlan"]) > 0 ~}
+vlans:
+%{ for net in networking ~}
+%{ if try(net.interface_type, "") == "vlan" ~}
+  ${net.interface_name}:
+    id: ${net.vlan_id}
+    link: ${net.vlan_link}
 %{ if try(net.ipv4_address, null) != null ~}
     addresses:
       - ${net.ipv4_address}

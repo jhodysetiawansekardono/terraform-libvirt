@@ -175,6 +175,9 @@ variable "network_config" {
                 bond_mode             = optional(string)
                 bond_miimon           = optional(number)
                 bond_lacp_rate        = optional(string)
+                bond_xmit_hash_policy = optional(string)
+                vlan_link             = optional(string)
+                vlan_id               = optional(number)
                 })
   )
   default = [
