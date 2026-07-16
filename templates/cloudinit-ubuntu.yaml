@@ -2,6 +2,8 @@
 fqdn: ${hostname}${domain}
 hostname: ${hostname}
 create_hostname_file: true
+# For Ubuntu 26.04
+#prefer_fqdn_over_hostname: true
 
 # Update & install package
 package_update: true
@@ -84,6 +86,7 @@ write_files:
 # Set NTP
 ntp:
   enabled: true
+  # Valid options: chrony, ntp, openntpd, ntpdate, systemd-timesyncd.
   ntp_client: systemd-timesyncd
   allow:
     - 127.0.0.1/32
