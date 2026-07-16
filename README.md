@@ -178,13 +178,14 @@ network_config = [
   },
   # Bond (LACP)
   {
-    interface_type  = "bond"
-    interface_name  = "bond0"
-    bond_interfaces = ["ens4", "ens5"]
-    bond_mode       = "802.3ad"
-    bond_miimon     = 100
-    bond_lacp_rate  = "fast"
-    ipv4_address    = "192.168.122.20/24"
+    interface_type        = "bond"
+    interface_name        = "bond0"
+    bond_interfaces       = ["ens4", "ens5"]
+    bond_mode             = "802.3ad"
+    bond_miimon           = 100
+    bond_lacp_rate        = "fast"
+    bond_xmit_hash_policy = "layer3+4"
+    ipv4_address          = "192.168.122.20/24"
   },
   # Bridge
   {
@@ -196,6 +197,16 @@ network_config = [
     ipv4_address         = "192.168.122.30/24"
     ipv4_gateway         = "192.168.122.1"
     ipv4_nameservers     = "8.8.8.8"
+  },
+  # VLAN
+  {
+    interface_type   = "vlan"
+    interface_name   = "bond0.100"
+    vlan_link        = "bond0"
+    vlan_id          = 100
+    ipv4_address     = "192.168.100.10/24"
+    ipv4_gateway     = "192.168.100.1"
+    ipv4_nameservers = "8.8.8.8"
   }
 ]
 ```
